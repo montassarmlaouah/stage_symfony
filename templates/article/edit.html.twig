@@ -1,0 +1,61 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{{ form.vars.value.id ? 'Modifier le Produit ' : 'Ajoute un nouveaux Produit' }}</h1>
+<a href="{{ path('article_index') }}" class="btn btn-success btn-sm">Retour à la liste des Produit</a>
+{{ form_start(form) }}
+
+<p><strong>Image actuelle :</strong></p>
+{% if article.image %}
+    <img src="{{ asset('uploads/images/' ~ article.image) }}" alt="{{ article.title }}" width="300px">
+{% else %}
+    <p>Aucune image disponible</p>
+{% endif %}
+
+<p><strong>Les Images actuelle :</strong></p>
+{% for image in article.images %}
+    <div class="image-container" id="image-{{ image.id }}">
+        <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="Product Image" class="img-fluid">
+        <button class="btn btn-danger btn-sm delete-image-btn" data-image-id="{{ image.id }}" data-article-id="{{ article.id }}">
+            Supprimer
+        </button>
+    </div>
+{% endfor %}
+
+
+{{ form_widget(form) }}
+{{ form_end(form) }}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-image-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            let imageId = this.getAttribute("data-image-id");
+            let articleId = this.getAttribute("data-article-id");
+
+            if (confirm("Voulez-vous vraiment supprimer cette image ?")) {
+                fetch(`/article/${articleId}/delete-image/${imageId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`image-${imageId}`).remove();
+                        alert("Image supprimée avec succès !");
+                    } else {
+                        alert("Erreur : " + data.error);
+                    }
+                })
+                .catch(error => console.error("Erreur :", error));
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

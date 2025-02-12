@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Catégories{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3" >
+    <h1>Liste des Catégories</h1>
+    <a href="{{ path('categorie.add') }}"  class="btn btn-success">Ajouter une nouvelle catégorie</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Prouduit</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categorie in categories %}
+            <tr>
+                <td>{{ categorie.id }}</td>
+                <td>{{ categorie.name }}</td>
+                <td>
+                    {% if categorie.image %}
+                        <img src="{{ asset('uploads/' ~ categorie.image) }}" alt="{{ categorie.name }}" width="100">
+                    {% else %}
+                        <p>Aucune image disponible</p>
+                    {% endif %}
+                </td>
+                <td>{{ categorie.description }}</td>
+                            <td>
+                    {% if categorie.articles|length > 0 %}
+                        <ul>
+                            {% for article in categorie.articles %}
+                            <span class="badge bg-primary">{{ article.title }}</span>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="text-muted">Aucun article</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{{ path('categorie.edit', { id: categorie.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                    {% include 'categorie/delete_form.html.twig' with { 'categorie': categorie } %}
+                    <a href="{{ path('categorie.details', { id: categorie.id }) }}" class="btn btn-info btn-sm">Détails</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Aucune catégorie disponible</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="6" class="text-center">
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

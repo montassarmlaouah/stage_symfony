@@ -1,9 +1,11 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
+        driver: 'pdo_mysql'
+        charset: utf8mb4
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
+        # Uncomment and set the server version if known
         #server_version: '16'
 
         profiling_collect_backtrace: '%kernel.debug%'
@@ -22,6 +24,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            string_functions:
+                JSON_CONTAINS: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains
 
 when@test:
     doctrine:
@@ -48,3 +53,21 @@ when@prod:
                     adapter: cache.app
                 doctrine.system_cache_pool:
                     adapter: cache.system
+
+
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
+                driver: 'pdo_pgsql'
+                server_version: '15.1'
+                charset: utf8
+                default_table_options:
+                    charset: utf8mb4
+                    collate: utf8mb4_unicode_ci
+            
+            delivery:
+                url: '%env(resolve:DELIVERY_DATABASE_URL)%'
+                driver: 'sqlsrv'
+                charset: UTF-8

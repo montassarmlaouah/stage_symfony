@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   
+    <div class="add-article-btn" style="text-align: right; margin-bottom: 20px;">
+        <a href="{{ path('article.add') }}" class="btn btn-success">Ajouter un Produit</a>
+    
+    </div>
+
+    <h1>Liste des Produits</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Image</th>
+                <th>Contenu</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Catégorie</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                 
+        <td>
+           {% if article.image %}
+    <img src="{{ asset('uploads/images/' ~ article.image) }}" alt="{{ article.title }}" width="100px">
+     {% else %}
+    <p>Aucune image disponible</p>
+    {% endif %}
+        </td>
+                    <td>{{ article.content }}</td>
+                    <td>{{ article.price }}</td>
+                    <td>{{ article.stock }}</td>
+                    <td>
+                        {% if article.categorie %}
+                            <span class="badge bg-warning">{{ article.categorie.name }}</span>
+                        {% else %}
+                            <span class="text-muted">Aucune catégorie</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('article.edit', { id: article.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <form method="post" action="{{ path('article.delete', { id: article.id }) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                        <a href="{{ path('article.details', { id: article.id }) }}" class="btn btn-info btn-sm">Détails</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+                  

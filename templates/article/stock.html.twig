@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste du Stock{% endblock %}
+
+{% block body %}
+    <h1>Liste du Stock</h1>
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Nom de l'article</th>
+                <th>Quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.stock }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

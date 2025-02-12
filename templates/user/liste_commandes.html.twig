@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Liste des Commandes</h1>
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Quantite</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Produit</th>
+        
+        </tr>
+    </thead>
+    <tbody>
+        {% for commande in commandes %}
+        <tr>
+            <td>{{ commande.id }}</td>
+            <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+            <td>{{ commande.client.name }}</td>
+            <td>{{ commande.quantite }}</td>
+            <td>
+
+                <form  action="{{ path('update_status', {'id': commande.id}) }}" method="post">
+                    <select class="btn btn-info btn-sm" name="status" onchange="this.form.submit()">
+                        <option value="en attente" {% if commande.status == 'en attente' %}selected{% endif %}>En attente</option>
+                        <option value="validee" {% if commande.status == 'validee' %}selected{% endif %}>Validée</option>
+                        <option value="en cours de livraison" {% if commande.status == 'en cours de livraison' %}selected{% endif %}>En cours de livraison</option>
+                    </select>
+                </form>
+            </td>
+            <td>{{ commande.total }} TND</td>
+            <td>{{ commande.getArticlesAsString() }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<style>
+form {
+    margin: 0;
+    padding: 0;
+}
+
+select {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select:hover {
+    border-color: #888; 
+}
+
+select:focus {
+    outline: none;
+    border-color: #555;
+
+
+select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048"%3E%3Cpath fill="%23666" d="M2048 896h-2048l1024 1024z"%3E%3C/path%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 12px 12px;
+}
+
+
+option {
+    padding: 8px 10px;
+}
+</style>
+{% endblock %}

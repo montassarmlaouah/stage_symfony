@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Cli IT Shop</title>
+    <link rel="stylesheet" href="{{ asset('css/style-from.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-section">
+            <h1>BIENVENUE DANS <span>Cli IT Shop</span></h1>
+            <p>
+                your partner in E-Commerce 
+            </p>
+           
+            <img src="{{ asset('images/welcome-image.png') }}" alt="Welcome">
+        </div>
+
+        <div class="right-section">
+            <div class="logo">
+                <img src="{{ asset('images/logo1.png') }}" alt="Logo" />
+            </div>
+            <h1>Connexion</h1>
+        {{ form_start(ConnexionForm) }}
+            {{ form_widget(ConnexionForm) }}
+            {{ form_end(ConnexionForm) }}
+        <p class="footer-text">
+                Vous n'avez pas de compte ? <a href="{{ path('user_register') }}">S'inscrire maintenant</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

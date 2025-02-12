@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block body %}
+ <form class="d-flex" action="{{ path('app_search') }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Rechercher un Produit " aria-label="Search">
+        <button class="btn btn-outline-success ms-2" type="submit">Rechercher</button>
+    </form>
+<div class="products">
+  {% for articles in articles %}    
+      <div class="product">
+            <h2>{{ articles.title }}</h2>
+            <p>{{ articles.content }}</p>
+            <p>Prix : {{ articles.price }} DT</p>
+            <p>Stock : {{ articles.stock }}</p>
+           
+             {% if articles.image %}
+        <img src="{{ asset('uploads/images/' ~ articles.image) }}"alt="{{ articles.title }}"  width="300px">
+     {% else %}
+    <p>Aucune image disponible</p>
+    {% endif %}
+        </div>
+    {% else %}
+        <p>Aucun produit disponible pour le moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

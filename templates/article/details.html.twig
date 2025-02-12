@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Produit{% endblock %}
+
+{% block body %}
+<h1>Détails du Produit</h1>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <td>{{ article.id }}</td>
+    </tr>
+    <tr>
+        <th>Nom</th>
+        <td>{{ article.title }}</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>{{ article.content }}</td>
+    </tr>
+    <tr>
+        <th>Image</th>
+        <td>
+                  {% if article.Image %}
+<img src="{{ asset('uploads/images/' ~ article.Image) }}" alt="{{ article.title }}" width="300">
+        {% else %}
+            <p>Aucune image disponible</p>
+{% endif %}
+    </td>
+    
+        </td>
+    </tr>
+    <tr>
+    <th>Images</th>
+    <td>
+        {% for image in article.images %}
+            <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="Product Image" class="img-fluid">
+        {% else %}
+            <p>Aucune image supplémentaire disponible</p>
+        {% endfor %}
+    </td>
+
+<tr>
+</table>
+
+<a href="{{ path('article_list') }}" class="btn btn-secondary">Retour à la liste des articles</a>
+{% endblock %}

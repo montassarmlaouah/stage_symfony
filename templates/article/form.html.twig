@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product is defined ? 'Modifier' : 'Ajouter' }} un Produit{% endblock %}
+
+{% block body %}
+<h1>{{ product is defined ? 'Modifier' : 'Ajouter' }} un Produit</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+    <button type="submit">{{ product is defined ? 'Modifier' : 'Ajouter' }}</button>
+{{ form_end(form) }}
+
+<a href="{{ path('list_products') }}">Retour</a>
+{% endblock %}

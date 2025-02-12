@@ -1,0 +1,61 @@
+
+{% extends 'base2.html.twig' %}
+
+{% block title %}Validation de la commande{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+   
+        <!-- Récapitulatif du panier -->
+        <div class="col-md-4">
+            <h3>Résumé de votre commande</h3>
+            <ul class="list-group">
+                {% for item in items %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        {{ item.title }} <br>
+                        <small>Quantité : {{ item.quantity }}</small>
+                    </span>
+                    <span>{{ (item.price * item.quantity) | number_format(3, '.', ',') }} DT</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Sous-total</strong>
+                    <strong>{{ sous_total | number_format(3, '.', ',') }} DT</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Timbre Fiscal</span>
+                    <span>{{ timbre_fiscal | number_format(3, '.', ',') }} DT</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Total</strong>
+                    <strong>{{ total | number_format(3, '.', ',') }} DT</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Adresse et paiement -->
+    <div class="mt-4">
+        <h3>2. Adresse de Livraison</h3>
+        <form action="{{ path('commande_create') }}" method="POST">
+            <div class="mb-3">
+                <label for="adresse" class="form-label">Adresse</label>
+                <input type="text" id="adresse" name="adresse" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="livraison" class="form-label">Mode de Livraison</label>
+                <select id="livraison" name="livraison" class="form-control" required>
+                    <option value="standard">Standard</option>
+                    <option value="express">Express</option>
+                </select>
+            </div>
+           
+             
+              
+            <button type="submit" class="btn btn-success">Valider la commande</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
