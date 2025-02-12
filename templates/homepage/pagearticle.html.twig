@@ -1,0 +1,32 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Articles pour {{ categorie.name }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Prdouits pour la catégorie : {{ categorie.name }}</h1>
+        <p class="text-center">{{ categorie.description }}</p>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for article in articles %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if article.image %}
+                            <img src="{{ asset('uploads/images/' ~ article.image) }}" class="card-img-top" alt="{{ article.title }}">
+                        {% else %}
+                            <img src="{{ asset('assets/default-image.jpg') }}" class="card-img-top" alt="Image par défaut">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <h2>{{ article.price }} DT</h2>
+                        </div>
+                        <div class="card-footer text-center">
+                         <a href="{{ path('detail_article', { id: article.id }) }}" class="btn btn-primary">Voir les détails</a>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

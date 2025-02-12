@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Admin;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Admin>
+ *
+ * @method Admin|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Admin|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Admin[]    findAll()
+ * @method Admin[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class AdminRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Admin::class);
+    }
+
+    /**
+     * Save an Admin entity.
+     *
+     * @param Admin $admin
+     * @param bool $flush
+     */
+    public function save(Admin $admin, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($admin);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * Remove an Admin entity.
+     *
+     * @param Admin $admin
+     * @param bool $flush
+     */
+    public function remove(Admin $admin, bool $flush = true): void
+    {
+        $this->_em->remove($admin);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    /**
+     * Find an Admin by username.
+     *
+     * @param string $username
+     * @return Admin|null
+     */
+    public function findOneByUsername(string $username): ?Admin
+    {
+        return $this->findOneBy(['username' => $username]);
+    }
+
+    /**
+     * Find all Admins with a specific role.
+     *
+     * @param string $role
+     * @return Admin[]
+     */
+    public function findByRole(string $role): array
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where('JSON_CONTAINS(a.roles, :role) = 1')
+           ->setParameter('role', json_encode($role));
+
+        return $qb->getQuery()->getResult();
+    }
+ 
+
+}

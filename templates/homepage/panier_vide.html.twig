@@ -1,0 +1,9 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Votre Panier est Vaide{% endblock %}
+
+{% block body %}
+    <h1>Votre Panier est Vide</h1>
+    <p>Il semble que vous n'ayez pas encore ajouté d'articles à votre panier.</p>
+    <a class="btn btn-secondary"href="{{ path('page_client') }}">Retour à la page d'accueil</a>
+{% endblock %}

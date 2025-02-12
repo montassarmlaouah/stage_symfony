@@ -1,0 +1,40 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Affichier La liste Des information</h1>
+        <a href="{{ path('info_add') }}" class="btn btn-success">Ajouter nouveaux information</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Location</th>
+                <th>Facebook</th>
+                <th>Instagram</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for info in infos %}
+                <tr>
+                    <td>{{ info.id }}</td>
+                    <td>{{ info.email }}</td>
+                    <td>{{ info.phoneNumber }}</td>
+                    <td>{{ info.location }}</td>
+                    <td>{{ info.facebook }}</td>
+                    <td>{{ info.instagram }}</td>
+                    <td>
+          
+        </form>
+                        <a href="{{ path('info_edit', {id: info.id}) }}" class="btn btn-primary">Modfier</a>
+                    {% include 'Info/delete-info.html.twig' with { 'info': info } %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

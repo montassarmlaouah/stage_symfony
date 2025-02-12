@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Modifier la catégorie</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+     <p><strong>Image actuelle :</strong></p>
+    {% if categorie.image %}
+        <img src="{{ asset('uploads/' ~ categorie.image) }}" alt="{{ categorie.name }}" width="200">
+    {% else %}
+        <p>Aucune image disponible</p>
+    {% endif %}
+    <button class="btn btn-primary mt-3">Enregistrer les modifications</button>
+{{ form_end(form) }}
+
+<a href="http://127.0.0.1:8000/categorie" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

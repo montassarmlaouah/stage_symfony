@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Cli IT Shop</title>
+    <link rel="stylesheet" href="{{ asset('css/style-from.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-section">
+            <h1>BIENVENUE DANS <span>Cli IT Shop</span></h1>
+            <p>
+                your partner in E-Commerce
+            </p>
+           
+            <img src="{{ asset('images/welcome-image.png') }}" alt="Welcome">
+        </div>
+
+        <div class="right-section">
+            <div class="logo">
+                <img src="{{ asset('images/logo1.png') }}" alt="Logo" />
+            </div>
+            <div class="container">
+                <h1>Inscription</h1>
+                {{ form_start(inscriptionForm) }}
+                {{ form_widget(inscriptionForm) }}
+                {{ form_end(inscriptionForm) }}
+                <p class="footer-text">
+                    Vous avez déjà un compte ? <a href="{{ path('user_login') }}">Se connecter</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

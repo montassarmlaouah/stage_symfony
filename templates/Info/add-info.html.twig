@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ajouter des Information</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.phoneNumber) }}
+        {{ form_row(form.location) }}
+        {{ form_row(form.facebook) }}
+        {{ form_row(form.instagram) }}
+            {{ form_row(form.apropos) }}
+
+        {{ form_row(form.submit) }}
+          {{ form_end(form) }}
+  
+{% endblock %}

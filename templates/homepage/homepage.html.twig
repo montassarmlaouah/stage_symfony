@@ -1,0 +1,134 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Page de Accueil{% endblock %}
+
+{% block body %}
+ 
+<div class="video-container">
+
+    <video id="videoPlayer" autoplay loop muted>
+        <source src="{{ asset('video/1.mp4') }}" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo.
+    </video>
+
+    <div class="video-controls">
+        <button onclick="changeVideo(-1)" class="btn btn-primary">
+            <img src="{{ asset('images/path_to_your_left_arrow_image.png') }}" alt="Previous" style="width: 30px; height: 30px;">
+        </button>
+        <button onclick="changeVideo(1)" class="btn btn-primary">
+            <img src="{{ asset('images/path_to_your_right_arrow_image.png') }}" alt="Next"style="width: 30px; height: 30px;">
+        </button>
+    </div>
+
+   
+</div>
+
+<div class="overlay-text">
+       <p class="animated-text">Achetez plus et économisez sur les frais de livraison ! Pour toute commande d'un montant égal ou supérieur à 150 TND, bénéficiez automatiquement de la livraison gratuite à votre domicile. Et si vous préférez retirer vos achats en magasin, c'est gratuit, sans minimum d'achat ! Simplifiez-vous la vie tout en profitant de nos meilleures offres.</p>
+    </div>
+<h1 class="text-center mb-5 text-primary">Meilleure sélection pour vous</h1>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for categorie in categories %}
+    <div class="col">
+        <div class="card h-100">
+            {% if categorie.image %}
+            <img src="{{ asset('uploads/' ~ categorie.image) }}" class="card-img-top" alt="{{ categorie.name }}">
+            {% else %}
+            <img src="{{ asset('assets/default-image.jpg') }}" class="card-img-top" alt="Default Image">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ categorie.name }}</h5>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ path('page_article', { id: categorie.id }) }}" class="btn btn-primary">Voir plus</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+    let videoIndex = 1;
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoSources = [
+        "{{ asset('video/1.mp4') }}",
+        "{{ asset('video/2.mp4') }}",
+        "{{ asset('video/3.mp4') }}",
+        "{{ asset('video/4.mp4') }}"
+    ];
+
+
+    function changeVideo(direction) {
+        videoIndex += direction;
+
+        if (videoIndex < 1) videoIndex = videoSources.length;
+        if (videoIndex > videoSources.length) videoIndex = 1;
+
+        videoPlayer.src = videoSources[videoIndex - 1];
+        videoPlayer.load();
+        videoPlayer.play();
+    }
+</script>
+
+<style>
+.video-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 100%;
+    display: block;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1;
+}
+
+.video-controls button {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.overlay-text {
+    top: 700px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 2;
+        text-align: center;
+
+    
+}
+
+
+.animated-text {
+    display: inline-block; 
+    padding-right: 100%; 
+    animation: move 30s linear infinite;
+    color:black;
+}
+
+@keyframes move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+
+{% endblock %}

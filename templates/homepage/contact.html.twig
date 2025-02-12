@@ -1,0 +1,80 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Contactez-nous{% endblock %}
+
+{% block body %}
+<div class="container contact-container">
+    <h2 class="text-center">Contactez-nous</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6 form-section">
+            {{ form_start(form, {'attr': {'class': 'contact-form'}}) }}
+                
+                <div class="mb-3">
+                    {{ form_label(form.email, 'Votre Email', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="d-grid">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-md-4 info-section">
+           {% for info in infos %}
+        <li class="d-flex align-items-center mb-2">
+            <img src="{{ asset('images/mail2.png') }}" alt="mail" class="me-2 icon-footer" width="24" height="24"/>
+            <span>{{ info.email }}</span>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+            <img src="{{ asset('images/phone2.png') }}" alt="phone" class="me-2 icon-footer" width="24" height="24"/>
+            <span>{{ info.phoneNumber }}</span>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+            <img src="{{ asset('images/location2.png') }}" alt="location" class="me-2 icon-footer" width="24" height="24"/>
+            <span>{{ info.location }}</span>
+        </li>
+    {% endfor %}
+        </div>
+    </div>
+</div>
+<style>
+.contact-container {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-section, .info-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.info-section {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.info-section h5 {
+    color: #007bff; /* Utiliser la couleur du thème Bootstrap primary */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Assurer que les boutons correspondent à la palette de couleurs */
+}
+
+.contact-form .form-control {
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+}
+
+.contact-form .form-label {
+    color: #666;
+}
+
+</style>
+{% endblock %}

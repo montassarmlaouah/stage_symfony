@@ -1,0 +1,49 @@
+{% extends 'base2.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Votre Panier</h2>
+  
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix Unitaire</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.price | number_format(2, '.', ',') }} TND</td>
+                        <td>
+                            <form action="{{ path('panier_update', { id: item.id }) }}" method="POST" class="d-inline">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control d-inline-block w-auto">
+                                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                            </form>
+                        </td>
+                        <td>{{ (item.price * item.quantity) | number_format(2, '.', ',') }} TND</td>
+                        <td>
+                            <form action="{{ path('panier_remove', { id: item.id }) }}" method="POST">
+                                <button type="submit" class="btn btn-danger">Retirer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td colspan="2">{{ total | number_format(2, '.', ',') }} TND</td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="{{ path('page_client') }}" class="btn btn-secondary">Continuer mes achats</a>
+        <a href="{{ path('commande_create') }}" class="btn btn-success" {% if items|length == 0 %}disabled{% endif %}>
+            Commander
+        </a>
+</div>
+{% endblock %}

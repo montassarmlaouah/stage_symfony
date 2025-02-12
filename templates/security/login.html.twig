@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Cli IT Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style-from.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-section">
+            <h1>BIENVENUE DANS <span>Cli IT Shop</span></h1>
+            <p>
+                your partner in E-Commerce 
+            </p>
+            
+            <img src="{{ asset('images/welcome-image.png') }}" alt="Welcome">
+        </div>
+
+        <div class="right-section">
+            <div class="logo">
+                <img src="{{ asset('images/logo1.png') }}" alt="Logo" />
+            </div>
+                
+                <h2 class="text-center mb-4">Connexion</h2>
+                <form method="post">
+                    <!-- Gestion des erreurs -->
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                    
+                   
+                    
+                    <!-- Formulaire -->
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Adresse email</label>
+                        <input type="email" name="email" id="inputEmail" value="{{ last_username }}" class="form-control" autocomplete="email" required autofocus>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="inputPassword" class="form-label">Mot de passe</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    </div>
+                    
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <button class="btn btn-primary w-100" type="submit">Se connecter</button>
+                </form>
+
+                <!-- Lien pour l'inscription -->
+                <p class="text-center mt-3">
+                    Vous n'avez pas de compte ? 
+                    <a href="{{ path('user_register') }}" class="text-decoration-underline">S'inscrire maintenant</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

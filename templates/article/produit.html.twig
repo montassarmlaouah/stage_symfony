@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page des Produits{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Page des produits</h1>
+    <a href="{{ path('article_new') }}" class="btn btn-primary mb-3">+ Ajouter un produit</a>
+<a href="{{ path('article_produit') }}">Produits</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Image</th>
+                <th>Prix</th>
+                <th>Livraison</th>
+                <th>Stock</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.nom }}</td>
+                    <td>
+                        {% if article.image %}
+                            <img src="{{ asset('uploads/' ~ article.image) }}" alt="{{ article.nom }}" style="width: 50px; height: auto;">
+                        {% else %}
+                            Pas d'image
+                        {% endif %}
+                    </td>
+                    <td>{{ article.prix }} TND</td>
+                    <td>{{ article.livraison }} jours</td>
+                    <td>{{ article.stock }}</td>
+                    <td>
+                        {% if article.stock > 0 %}
+                            <span class="badge bg-success">Affiché</span>
+                        {% elseif article.stock == 0 %}
+                            <span class="badge bg-danger">En rupture de stock</span>
+                        {% else %}
+                            <span class="badge bg-warning">Caché</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('article_show', {id: article.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('article_edit', {id: article.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form method="post" action="{{ path('article_delete', {id: article.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

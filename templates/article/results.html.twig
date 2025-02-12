@@ -1,0 +1,23 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de recherche{% endblock %}
+
+{% block body %}
+
+    <h1>Résultats de recherche pour "{{ query }}"</h1>
+
+    {% if articles is empty %}
+        <p>Aucun article trouvé.</p>
+    {% else %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{{ path('article_show', { 'id': article.id }) }}">
+                        {{ article.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

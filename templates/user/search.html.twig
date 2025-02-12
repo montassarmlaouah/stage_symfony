@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Résultats de la recherche{% endblock %}
+{% block body %}
+<h1>Résultats de la recherche pour "{{ query }}"</h1>
+<h2>Produit
+</h2>
+{% if articles is not empty %}
+<ul>
+{% for article in articles %}
+<a class="btn btn-primary" href="{{ path('article.details', {'id': article.id}) }}">{{ article.title }}</a>
+{% endfor %}
+</ul>
+{% else %}
+<p>Aucun Produit trouvé.</p>
+{% endif %}
+{% endblock %}

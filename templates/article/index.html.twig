@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Articles</h1>
+<a href="{{ path('article_new') }}" class="btn btn-primary mb-3">Create Article</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+        <tr>
+            <td>{{ article.id }}</td>
+            <td>{{ article.title }}</td>
+            <td>{{ article.content|length > 50 ? article.content[:50] ~ '...' : article.content }}</td>
+            <td>{{ article.createdAt|date('Y-m-d H:i') }}</td>
+            <td>
+                <a href="{{ path('article_edit', {id: article.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                <form method="post" action="{{ path('article_delete', {id: article.id}) }}" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

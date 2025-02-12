@@ -1,0 +1,13 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Modfier  Mes Informations {% endblock %}
+
+{% block body %}
+    <h1>Modfier  Mes Informations</h1>
+
+    {{ form_start(formedit) }}
+        {{ form_widget(formedit) }}
+        <button class="btn btn-primary">Enregistrer</button>
+    {{ form_end(formedit) }}
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base2.html.twig' %}
+{% block title %}Liste des Commandes{% endblock %}
+
+
+{% block body %}
+    <h1>Liste des Commandes</h1>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Quantite</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Prouduit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.id }}</td>
+                    <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+                    <td>{{commande.Quantite}}</td>
+                    <td>{{ commande.status }}</td>
+                    <td>{{ commande.total }} TND</td>
+                 
+                    <td>{{ commande.getArticlesAsString() }}</td>
+                    <td>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
