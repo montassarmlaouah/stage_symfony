@@ -7,13 +7,38 @@
         <input class="form-control me-2" type="search" name="q" placeholder="Rechercher un Produit " aria-label="Search">
         <button class="btn btn-outline-success ms-2" type="submit">Rechercher</button>
     </form>
+ 
+<div class="container mt-4">
+
+    <div style="margin: 20px auto; max-width: 300px; text-align: center; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <p style="font-size: 1.2rem; margin: 0;"><strong>Nombre total de commandes : </strong></p>
+    <h3 style="font-size: 1.5rem; margin-bottom: 15px;"><span id="totalCommandes"></span></h3>
+</div>
+
+<div style="margin: 20px auto; max-width: 300px; text-align: center; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+<p style="font-size: 1.2rem; margin: 0;"><strong>Total des commandes : </strong>
+ <h3 style="font-size: 1.5rem; margin-bottom: 15px;"><span id="totalCommandesValue"></span> DT</p></h3>
+</div>
+
+
+
+
+<div class="container mt-4">
+    <h2 class="text-center">Nombre des produit commandes </h2>
+    <canvas id="ordersChart"></canvas>
+</div>
+    <div class="d-flex flex-wrap justify-content-center">
+        {% set colors = ['#FF5733', '#33FF57', '#5733FF', '#FFD700', '#00CED1'] %}
+        
+      
+   
 <div class="products">
-  {% for articles in articles %}    
+  {% for articles in articles %}
       <div class="product">
-            <h2>{{ articles.title }}</h2>
-            <p>{{ articles.content }}</p>
-            <p>Prix : {{ articles.price }} DT</p>
-            <p>Stock : {{ articles.stock }}</p>
+            <h2 class="h5">{{ articles.title }}</h2>
+            <p style="color: black;">{{ articles.content }}</p>
+            <p>Prix : <span class="fw-bold">{{ articles.price }} DT</span></p>
+            <p>Stock : <span class="fw-bold">{{ articles.stock }}</span></p>
            
              {% if articles.image %}
         <img src="{{ asset('uploads/images/' ~ articles.image) }}"alt="{{ articles.title }}"  width="300px">
@@ -25,4 +50,41 @@
         <p>Aucun produit disponible pour le moment.</p>
     {% endfor %}
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('ordersChart').getContext('2d');
+        var ordersChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ ordersByProduct|map(order => order.product_name)|json_encode|raw }},
+                datasets: [{
+                    label: 'Quantité commandée',
+                    data: {{ ordersByProduct|map(order => order.total_quantity)|json_encode|raw }},
+                    backgroundColor: {{ ordersByProduct|map((order, i) => colors[i % colors|length])|json_encode|raw }},
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+     
+        const totalCommandes = {{ commandStats.total_commandes }};
+        const totalCommandesValue = {{ commandStats.total_commandes_value }};
+
+        document.getElementById('totalCommandes').textContent = totalCommandes;
+        document.getElementById('totalCommandesValue').textContent = totalCommandesValue.toFixed(2);
+    });
+</script>
+
 {% endblock %}
+

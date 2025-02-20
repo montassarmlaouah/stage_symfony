@@ -21,26 +21,31 @@
     <tr>
         <th>Image</th>
         <td>
-                  {% if article.Image %}
-<img src="{{ asset('uploads/images/' ~ article.Image) }}" alt="{{ article.title }}" width="300">
-        {% else %}
-            <p>Aucune image disponible</p>
-{% endif %}
-    </td>
-    
+            {% if article.Image %}
+                <img src="{{ asset('uploads/images/' ~ article.Image) }}" alt="{{ article.title }}" width="300">
+            {% else %}
+                <p>Aucune image disponible</p>
+            {% endif %}
         </td>
     </tr>
     <tr>
-    <th>Images</th>
-    <td>
-        {% for image in article.images %}
-            <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="Product Image" class="img-fluid">
-        {% else %}
-            <p>Aucune image supplémentaire disponible</p>
-        {% endfor %}
-    </td>
-
-<tr>
+        <th>Images</th>
+        <td>
+            {% for image in article.images %}
+                <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="Product Image" class="img-fluid">
+            {% else %}
+                <p>Aucune image supplémentaire disponible</p>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th>Taille</th>
+        <td>{{ article.sizes }}</td>
+    </tr>
+    <tr>
+        <th>Couleur</th>
+        <td>{{ article.colors  }}</td>
+    </tr>
 </table>
 
 <a href="{{ path('article_list') }}" class="btn btn-secondary">Retour à la liste des articles</a>

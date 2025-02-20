@@ -162,13 +162,16 @@ public function edit(Request $request, EntityManagerInterface $entityManager, To
     $formedit = $this->createForm(ClientRegistrationFormType::class, $client);
     $formedit->remove('plainPassword'); 
     $formedit->add('currentPassword', PasswordType::class, [
+        'label_attr' => ['style' => 'color: blue;'],
         'mapped' => false,
         'required' => true,
         'label' => 'Ancien mot de passe',
     ]);
     $formedit->add('newPassword', PasswordType::class, [
+      
         'mapped' => false,
         'required' => true,
+        'label_attr' => ['style' => 'color: blue;'],
         'label' => 'Nouveau mot de passe',
     ]);
     $formedit->handleRequest($request);

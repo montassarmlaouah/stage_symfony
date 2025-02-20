@@ -1,6 +1,6 @@
 <?php
 
-// se partie est de admin
+
 namespace App\Controller;
 
 use App\Form\ConnexionFormType;

@@ -23,18 +23,29 @@
    
 </div>
 
+
 <div class="overlay-text">
-       <p class="animated-text">Achetez plus et économisez sur les frais de livraison ! Pour toute commande d'un montant égal ou supérieur à 150 TND, bénéficiez automatiquement de la livraison gratuite à votre domicile. Et si vous préférez retirer vos achats en magasin, c'est gratuit, sans minimum d'achat ! Simplifiez-vous la vie tout en profitant de nos meilleures offres.</p>
-    </div>
+    <p class="animated-text" style="color: blue;">
+    
+        {% if info is defined and info.new %}
+            {{ info.new }}
+        {% endif %}
+    </p>
+</div>
 <h1 class="text-center mb-5 text-primary">Meilleure sélection pour vous</h1>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     {% for categorie in categories %}
     <div class="col">
+ <div class="left-section">
         <div class="card h-100">
             {% if categorie.image %}
+           
             <img src="{{ asset('uploads/' ~ categorie.image) }}" class="card-img-top" alt="{{ categorie.name }}">
+           
             {% else %}
+            
             <img src="{{ asset('assets/default-image.jpg') }}" class="card-img-top" alt="Default Image">
+          
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title text-primary">{{ categorie.name }}</h5>
@@ -43,6 +54,7 @@
                 <a href="{{ path('page_article', { id: categorie.id }) }}" class="btn btn-primary">Voir plus</a>
             </div>
         </div>
+         </div>
     </div>
     {% endfor %}
 </div>
@@ -72,6 +84,18 @@
 </script>
 
 <style>
+.left-section img {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.left-section img:hover {
+    transform: scale(1.1);
+}
+
 .video-container {
     position: relative;
     width: 100%;
@@ -94,7 +118,7 @@
 }
 
 .video-controls button {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.00);
     border: none;
     color: white;
     padding: 10px 20px;
@@ -119,7 +143,8 @@
 
 
 .animated-text {
-    display: inline-block; 
+    display: inline-block;
+    color: blue;
     padding-right: 100%; 
     animation: move 30s linear infinite;
     color:black;

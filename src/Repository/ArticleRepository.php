@@ -7,9 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @extends ServiceEntityRepository<Article>
- */
+
 class ArticleRepository extends ServiceEntityRepository
 {
     private $entityManager;
@@ -20,34 +18,6 @@ class ArticleRepository extends ServiceEntityRepository
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * Reassign IDs to ensure they are sequential starting from 1.
-     */
-    public function reassignIds(): void
-    {
-        $conn = $this->entityManager->getConnection();
-        $conn->beginTransaction();
-
-        try {
-            // Fetch all articles ordered by ID
-            $articles = $this->createQueryBuilder('a')
-                ->orderBy('a.id', 'ASC')
-                ->getQuery()
-                ->getResult();
-
-            // Reassign IDs to ensure they are sequential starting from 1
-            $newId = 1;
-            foreach ($articles as $article) {
-                $conn->executeStatement('UPDATE article SET id = ? WHERE id = ?', [$newId, $article->getId()]);
-                $newId++;
-            }
-
-            $conn->commit();
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            throw $e;
-        }
-    }
     public function findBySearchQuery(string $query): array
     {
         return $this->createQueryBuilder('a')
@@ -57,12 +27,48 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function searchByTerm(string $term): array
-{
-    return $this->createQueryBuilder('a')
-        ->where('a.title LIKE :term OR a.content LIKE :term')
-        ->setParameter('term', '%' . $term . '%')
-        ->getQuery()
-        ->getResult();
-}
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.title LIKE :term OR a.content LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+   
+    public function reassignIds(): void
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        // Désactiver les contraintes de clés étrangères
+        $conn->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+        
+        try {
+            // Créer une table temporaire pour stocker les anciens et nouveaux IDs
+            $conn->executeQuery('CREATE TEMPORARY TABLE temp_ids AS 
+                SELECT id as old_id, ROW_NUMBER() OVER (ORDER BY id) as new_id 
+                FROM article');
+
+            // Mettre à jour les références dans la table image
+            $conn->executeQuery('UPDATE image i 
+                JOIN temp_ids t ON i.article_id = t.old_id 
+                SET i.article_id = t.new_id');
+
+            // Mettre à jour les IDs dans la table article
+            $conn->executeQuery('UPDATE article a 
+                JOIN temp_ids t ON a.id = t.old_id 
+                SET a.id = t.new_id');
+
+            // Réinitialiser l'auto-increment
+            $conn->executeQuery('ALTER TABLE article AUTO_INCREMENT = 1');
+            
+            // Supprimer la table temporaire
+            $conn->executeQuery('DROP TEMPORARY TABLE temp_ids');
+        } finally {
+            // Réactiver les contraintes de clés étrangères
+            $conn->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+        }
+    }
 }

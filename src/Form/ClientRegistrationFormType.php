@@ -17,18 +17,22 @@ class ClientRegistrationFormType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
+                'label_attr' => ['style' => 'color: blue;'],
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('email', EmailType::class, [
+                'label_attr' => ['style' => 'color: blue;'],
                 'label' => 'Email',
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Numéro de téléphone',
+                'label_attr' => ['style' => 'color: blue;'],
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('plainPassword', PasswordType::class, [
-                'mapped' => false, // Ne lie pas directement ce champ à une propriété de l'entité
+                'mapped' => false, 
+                'label_attr' => ['style' => 'color: blue;'],
                 'required' => true,
                 'label' => 'Mot de passe',
                 'attr' => [

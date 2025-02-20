@@ -1,5 +1,5 @@
 <?php
-// filepath: /C:/Users/saifb/project25/src/Entity/Info.php
+
 namespace App\Entity;
 use App\Repository\InfoRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,6 +39,20 @@ public function setApropos(?string $apropos): self
 {
     $this->apropos = $apropos;
     return $this;
+}
+#[ORM\Column(type: 'text', nullable: true)]
+private ?string $new = null;
+
+public function getNew(): ?string
+{
+    return $this->new;
+}
+
+public function setNew(?string $new): self
+{
+    $this->new = $new;
+    return $this;
+
 }
 
     public function getId(): ?int

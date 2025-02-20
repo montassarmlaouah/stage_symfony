@@ -1,16 +1,12 @@
 {% extends 'base2.html.twig' %}
 
-{% block title %}{{ article.title }} - Détails{% endblock %}
-
 {% block body %}
-<div class="container my-5">
-    <div class="row">
-        <!-- Colonne pour les images avec Carousel -->
-        <div class="col-md-6">
+  <div class="col-md-6">
             <div id="carouselArticleImages" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     {% for image in article.images %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            
                             <img src="{{ asset('uploads/images/' ~ image.filename) }}" class="d-block w-100" alt="Image de {{ article.title }}">
                         </div>
                     {% else %}
@@ -19,7 +15,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <!-- Boutons pour naviguer entre les images -->
+             
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselArticleImages" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Précédent</span>
@@ -30,32 +26,45 @@
                 </button>
             </div>
         </div>
-
-        <!-- Colonne pour les détails -->
         <div class="col-md-6">
-            <h1>{{ article.title }}</h1>
-            <p><strong>Prix :</strong> {{ article.price }} DT</p>
-            <p><strong>Description :</strong> {{ article.content }}</p>
-            <p><strong>Disponibilité :</strong>
-                {% if article.stock > 0 %}
-                    <span class="text-success">En stock</span>
+            <h1 style="color: blue;">{{ article.title }}</h1>
+            <p class="lead">{{ article.content }}</p>
+            <h2 class="text-primary">Prix: {{ article.price }} DT</h2>
+            <h2 class="text-primary">Couleur: {{ article.colors }}</h2>
+            <h2 class="text-primary">Taille: {{ article.sizes }}</h2>
+           
+               <p><strong>Disponibilité :</strong>
+                {% if article.stock is not null %}
+                    {% if article.stock > 0 %}
+                        <span class="text-success">En stock</span>
+                    {% else %}
+                        <span class="text-danger">Non disponible</span>
+                    {% endif %}
                 {% else %}
-                    <span class="text-danger">Non disponible</span>
+                    <span class="text-warning">Disponibilité non renseignée</span>
                 {% endif %}
             </p>
 
-            <!-- Formulaire pour ajouter au panier -->
-            <form action="{{ path('panier_add', { id: article.id }) }}" method="POST">
+
+            <form action="{{ path('panier_add', {id: article.id}) }}" method="post" class="mt-4">
                 <div class="mb-3">
-                    <label for="quantite" class="form-label"><strong>Quantité :</strong></label>
-                    <input type="number" id="quantite" name="quantite" class="form-control" min="1" value="1" required>
+                    <label class="form-label">Taille</label>
+                    <input type="text" name="size" class="form-control">
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Couleur</label>
+                    <input type="text" name="color" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Quantité</label>
+                    <input type="number" name="quantite" value="1" min="1" class="form-control" required>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Ajouter au panier</button>
             </form>
         </div>
     </div>
-    
-
-   
 </div>
 {% endblock %}

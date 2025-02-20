@@ -1,4 +1,3 @@
-
 {% extends 'base2.html.twig' %}
 
 {% block title %}Validation de la commande{% endblock %}
@@ -6,18 +5,18 @@
 {% block body %}
 <div class="container my-5">
     <div class="row">
-   
         <!-- Récapitulatif du panier -->
         <div class="col-md-4">
-            <h3>Résumé de votre commande</h3>
+            <h3 style="color: blue;">Résumé de votre commande</h3>
             <ul class="list-group">
                 {% for item in items %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
                         {{ item.title }} <br>
-                        <small>Quantité : {{ item.quantity }}</small>
+                        <small>Quantité : {{ item.quantity }}</small><br />
+                        <small>taille : {{ item.size }}</small><br />
+                        <small>color : {{ item.color }}</small>
                     </span>
-                    <span>{{ (item.price * item.quantity) | number_format(3, '.', ',') }} DT</span>
                 </li>
                 {% endfor %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -29,33 +28,47 @@
                     <span>{{ timbre_fiscal | number_format(3, '.', ',') }} DT</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <strong>Total</strong>
-                    <strong>{{ total | number_format(3, '.', ',') }} DT</strong>
+                    <strong style="color: blue;">Total</strong>
+                    <strong style="color: blue;">{{ total | number_format(3, '.', ',') }} DT</strong>
                 </li>
             </ul>
         </div>
     </div>
 
-    <!-- Adresse et paiement -->
+  
     <div class="mt-4">
-        <h3>2. Adresse de Livraison</h3>
-        <form action="{{ path('commande_create') }}" method="POST">
-            <div class="mb-3">
-                <label for="adresse" class="form-label">Adresse</label>
-                <input type="text" id="adresse" name="adresse" class="form-control" required>
+    <div class="mb-3">
+            <label for="telephone" class="form-label" style="color: blue;"> Votre Numéro de téléphone</label>
+            <div class="d-flex align-items-center">
+                <img src="{{ asset('images/phone2.png') }}" alt="phone" class="me-2 icon-footer" width="24" height="24"/>
+                <h5>{{ client.phoneNumber }}</h5>
             </div>
+            </div>
+        <form id="commandeForm" action="{{ path('commande_create') }}" method="POST">
             <div class="mb-3">
-                <label for="livraison" class="form-label">Mode de Livraison</label>
+            <label for="adresse" class="form-label" style="color: blue;">Adresse</label>
+            <input type="text" id="adresse" name="adresse" class="form-control" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="livraison" class="form-label" style="color: blue;">Mode de Livraison</label>
                 <select id="livraison" name="livraison" class="form-control" required>
                     <option value="standard">Standard</option>
                     <option value="express">Express</option>
                 </select>
             </div>
-           
-             
-              
-            <button type="submit" class="btn btn-success">Valider la commande</button>
+            <button type="submit" class="btn btn-success" onclick="afficherAlerte()">Valider la commande</button>
         </form>
     </div>
 </div>
+
+<script>
+    function afficherAlerte() {
+        alert('Votre commande a été ajoutée avec succès');
+        document.getElementById('commandeForm').submit();
+
+    }
+</script>
+
+
 {% endblock %}

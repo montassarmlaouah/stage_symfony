@@ -107,7 +107,35 @@ class Article
         return $this;
     }
 
-   
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $sizes = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $colors = null;
+
+ 
+
+    public function getSizes(): ?string
+    {
+        return $this->sizes;
+    }
+
+    public function setSizes(?string $sizes): self
+    {
+        $this->sizes = $sizes;
+        return $this;
+    }
+
+    public function getColors(): ?string
+    {
+        return $this->colors;
+    }
+
+    public function setColors(?string $colors): self
+    {
+        $this->colors = $colors;
+        return $this;
+    }
     public function getImage(): ?string
     {
         return $this->Image;
@@ -149,3 +177,5 @@ class Article
         return $this;
     }
 }
+
+   

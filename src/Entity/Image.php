@@ -16,7 +16,7 @@ class Image
     private ?string $filename = null;
 
     #[ORM\ManyToOne(targetEntity: Article::class, inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Article $article = null;
 
     public function getId(): ?int

@@ -4,11 +4,12 @@
 
 {% block body %}
     <div class="container my-5">
-        <h1 class="text-center mb-5">Prdouits pour la catégorie : {{ categorie.name }}</h1>
+        <h1 class="text-center mb-5" style="color: blue;">Prdouits pour la catégorie : {{ categorie.name }}</h1>
         <p class="text-center">{{ categorie.description }}</p>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             {% for article in articles %}
+            <div class="left-section">
                 <div class="col">
                     <div class="card h-100">
                         {% if article.image %}
@@ -17,16 +18,29 @@
                             <img src="{{ asset('assets/default-image.jpg') }}" class="card-img-top" alt="Image par défaut">
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5>
-                            <h2>{{ article.price }} DT</h2>
+                            <h5  style="color: blue;"class="card-title">{{ article.title }}</h5>
+                            <h2 style="color: blue;">{{ article.price }} DT</h2>
                         </div>
                         <div class="card-footer text-center">
                          <a href="{{ path('detail_article', { id: article.id }) }}" class="btn btn-primary">Voir les détails</a>
                         </div>
-
+                    </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+    <style>
+    .left-section img {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.left-section img:hover {
+    transform: scale(1.1);
+}
+    </style>
 {% endblock %}

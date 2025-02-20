@@ -3,30 +3,32 @@
 
 
 {% block body %}
-    <h1>Liste des Commandes</h1>
+    <h1 style="color: blue;">Liste des Commandes</h1>
     <table border="1" cellpadding="10">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Quantite</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Prouduit</th>
+                <th style="color: blue;" >ID</th>
+                <th style="color: blue;">Date</th>
+                <th style="color: blue;">Quantite</th>
+                <th style="color: blue;">Status</th>
+                <th style="color: blue;">Total</th>
+                <th style="color: blue;">Prouduit</th>
+                <th style="color: blue;">Couleur</th>
+                <th style="color: blue;">Taille<th>
+                
             </tr>
         </thead>
         <tbody>
             {% for commande in commandes %}
                 <tr>
-                    <td>{{ commande.id }}</td>
-                    <td>{{ commande.date|date('d/m/Y H:i') }}</td>
-                    <td>{{commande.Quantite}}</td>
-                    <td>{{ commande.status }}</td>
-                    <td>{{ commande.total }} TND</td>
-                 
-                    <td>{{ commande.getArticlesAsString() }}</td>
-                    <td>
-                    </td>
+                    <td  style="color: blue;">{{ commande.id }}</td>
+                    <td style="color: blue;">{{ commande.date|date('d/m/Y H:i') }}</td>
+                    <td  style="color: blue;">{{commande.Quantite}}</td>
+                    <td  style="color: blue;">{{ commande.status }}</td>
+                    <td  style="color: blue;">{{ commande.total }} TND</td>
+                    <td  style="color: blue;">{{ commande.getArticlesAsString() }}</td>
+                   <td  style="color: blue;">{{commande.colors}}</td>
+                    <td  style="color: blue;">{{commande.sizes }}</td>
                 </tr>
             {% endfor %}
         </tbody>

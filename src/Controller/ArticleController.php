@@ -1,10 +1,12 @@
 <?php
-//se partie pour le produit
+
 namespace App\Controller;
+
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Entity\Image;
 use App\Repository\ArticleRepository;
+use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class ArticleController extends AbstractController
 {
     #[Route('/article', name: 'article_list')]
     public function list(Request $request, ArticleRepository $articleRepository): Response
-    {       
+    {
         $articles = $articleRepository->findBy([], ['id' => 'ASC']);
 
         $sortBy = $request->query->get('sortBy', 'id');
@@ -51,7 +53,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gestion de l'image principale
+      
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
@@ -74,14 +76,13 @@ class ArticleController extends AbstractController
                 $image->setFilename($newFilename);
                 $image->setArticle($article);
         
-                // Ajout de l'image à l'article
                 $article->addImage($image);
             }
         
             $entityManager->persist($article);
             $entityManager->flush();
 
-            // Reassign IDs after adding a new article
+            
             $articleRepository->reassignIds();
         
             $this->addFlash('success', 'Article ajouté avec succès.');
@@ -99,7 +100,7 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle main image
+            
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
@@ -107,7 +108,7 @@ class ArticleController extends AbstractController
                 $article->setImage($newFilename);
             }
 
-            // Handle additional images
+         
             $imageFiles = $form->get('images')->getData();
             foreach ($imageFiles as $imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
@@ -152,6 +153,7 @@ public function deleteImage(int $id, int $imageId, EntityManagerInterface $entit
         return new JsonResponse(['error' => 'Image non associée à cet article.'], Response::HTTP_BAD_REQUEST);
     }
 }
+
 #[Route('/article/delete/{id}', name: 'article.delete', methods: ['POST'])]
 public function delete(Request $request, int $id, EntityManagerInterface $entityManager, ArticleRepository $articleRepository): Response
 {
@@ -163,18 +165,21 @@ public function delete(Request $request, int $id, EntityManagerInterface $entity
     }
 
     if ($this->isCsrfTokenValid('delete' . $article->getId(), $request->request->get('_token'))) {
-        $entityManager->remove($article);
-        $entityManager->flush();
+        try {
+            $entityManager->remove($article);
+            $entityManager->flush();
 
-        // Reassign IDs after deleting an article
-        $articleRepository->reassignIds();
+            
+            $articleRepository->reassignIds();
 
-        $this->addFlash('success', 'Article supprimé avec succès.');
+            $this->addFlash('success', 'Article supprimé avec succès.');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+        }
     }
 
     return $this->redirectToRoute('article_list');
 }
-
 
 
     #[Route('/article/details/{id}', name: 'article.details', methods: ['GET'])]
@@ -195,13 +200,19 @@ public function delete(Request $request, int $id, EntityManagerInterface $entity
         ]);
     }
     #[Route('/accueil', name: 'app_homepage')]
-    public function homepage(EntityManagerInterface $entityManager): Response
+    public function homepage(EntityManagerInterface $entityManager, CommandeRepository $commandeRepository): Response
     {
         $articles = $entityManager->getRepository(Article::class)->findAll();
+        $topProducts = $commandeRepository->getTopProducts();
+        $ordersByProduct = $commandeRepository->getOrdersByProduct();
+        $commandStats = $commandeRepository->getCommandStats();
 
         return $this->render('homepage/index.html.twig', [
             'message' => 'Bienvenue sur la page d\'accueil ',
             'articles' => $articles,
+            'topProducts' => $topProducts,
+            'ordersByProduct' => $ordersByProduct,
+            'commandStats' => $commandStats,
         ]);
     }
 }

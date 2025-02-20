@@ -1,34 +1,45 @@
+
 {% extends 'base2.html.twig' %}
 
 {% block body %}
 <div class="container mt-5">
-    <h2>Votre Panier</h2>
-  
+    <h2 style="color: blue;">Votre Panier</h2>
+    {% if items is empty %}
+        <p>Votre panier est vide.</p>
+    {% else %}
         <table class="table">
             <thead>
                 <tr>
                     <th>Produit</th>
-                    <th>Prix Unitaire</th>
+                    <th>Prix unitaire</th>
                     <th>Quantité</th>
                     <th>Total</th>
+                    <th>Couleur</th>
+                    <th>Taille</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
+                {% for key, item in items %}
                     <tr>
                         <td>{{ item.title }}</td>
-                        <td>{{ item.price | number_format(2, '.', ',') }} TND</td>
+                        <td>{{ item.price | number_format(3, '.', ',') }} TND</td>
                         <td>
-                            <form action="{{ path('panier_update', { id: item.id }) }}" method="POST" class="d-inline">
+                            <form action="{{ path('panier_update', {'id': key}) }}" method="POST" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('update-item') }}">
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control d-inline-block w-auto">
-                                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Mettre à jour</button>
                             </form>
                         </td>
-                        <td>{{ (item.price * item.quantity) | number_format(2, '.', ',') }} TND</td>
+                        <td>{{ (item.price * item.quantity) | number_format(3, '.', ',') }} TND</td>
+                        <td>{{ item.color|default('Non spécifié') }}</td>
+                        <td>{{ item.size|default('Non spécifié') }}</td>
                         <td>
-                            <form action="{{ path('panier_remove', { id: item.id }) }}" method="POST">
-                                <button type="submit" class="btn btn-danger">Retirer</button>
+                            <form action="{{ path('panier_remove', {'id': key}) }}" method="POST" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-item') }}">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+                                    Supprimer
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -37,13 +48,15 @@
             <tfoot>
                 <tr>
                     <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                    <td colspan="2">{{ total | number_format(2, '.', ',') }} TND</td>
+                    <td colspan="4"><strong>{{ total | number_format(3, '.', ',') }} TND</strong></td>
                 </tr>
             </tfoot>
         </table>
-        <a href="{{ path('page_client') }}" class="btn btn-secondary">Continuer mes achats</a>
-        <a href="{{ path('commande_create') }}" class="btn btn-success" {% if items|length == 0 %}disabled{% endif %}>
-            Commander
-        </a>
+        
+        <div class="mt-3">
+            <a href="{{ path('page_client') }}" class="btn btn-primary btn">Continuer mes achats</a>
+            <a href="{{ path('commande_validate') }}" class="btn btn-success">Valider ma commande</a>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

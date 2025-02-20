@@ -7,10 +7,13 @@
             <th>ID</th>
             <th>Date</th>
             <th>Client</th>
+            <th>Telephone</th>
             <th>Quantite</th>
             <th>Status</th>
             <th>Total</th>
             <th>Produit</th>
+            <th>Couleur</th>
+            <th>Taille</th>
         
         </tr>
     </thead>
@@ -20,6 +23,7 @@
             <td>{{ commande.id }}</td>
             <td>{{ commande.date|date('d/m/Y H:i') }}</td>
             <td>{{ commande.client.name }}</td>
+             <td>{{ commande.client.phoneNumber }}</td>
             <td>{{ commande.quantite }}</td>
             <td>
 
@@ -33,6 +37,8 @@
             </td>
             <td>{{ commande.total }} TND</td>
             <td>{{ commande.getArticlesAsString() }}</td>
+            <td>{{ commande.colors }}</td>
+            <td>{{ commande.sizes }}</td>
         </tr>
         {% endfor %}
     </tbody>

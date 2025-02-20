@@ -46,6 +46,11 @@ class InfoType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
+            ->add('new', TextareaType::class, [
+                'label' => 'Nouveau',
+                'required' => false,
+                'attr' => ['class' => 'form-control']
+            ])
             
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',

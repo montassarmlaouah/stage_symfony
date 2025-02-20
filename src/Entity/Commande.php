@@ -50,9 +50,7 @@ class Commande
     #[ORM\Column(type: 'float')]
     private $total;
 
-      /**
-     * @Assert\NotBlank(message="L'adresse ne peut pas être vide.")
-     */
+
     #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private string $adresse;
 
@@ -67,7 +65,6 @@ class Commande
         return $this;
     }
 
-    // Getter et setter pour Livraison
     public function getLivraison(): ?string
     {
         return $this->livraison;
@@ -79,7 +76,6 @@ class Commande
         return $this;
     }
 
-    // Getter et setter pour Paiement
     public function getPaiement(): ?string
     {
         return $this->paiement;
@@ -91,7 +87,35 @@ class Commande
         return $this;
     }
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $sizes = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $colors = null;
+
+ 
+
+    public function getSizes(): ?string
+    {
+        return $this->sizes;
+    }
+
+    public function setSizes(?string $sizes): self
+    {
+        $this->sizes = $sizes;
+        return $this;
+    }
+
+    public function getColors(): ?string
+    {
+        return $this->colors;
+    }
+
+    public function setColors(?string $colors): self
+    {
+        $this->colors = $colors;
+        return $this;
+    }
     public function setIdarticle(string $idarticle): self
     {
         $this->idarticle = $idarticle;
